@@ -1,61 +1,44 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+// Select elements
+const noBtn = document.querySelector(".no-btn");
+const yesBtn = document.querySelector(".yes-btn");
+const wrapper = document.querySelector(".wrapper");
+const question = document.querySelector(".question");
+const message = document.querySelector(".message");
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: whitesmoke;
-}
+let clickCount = 0; // Counter to track "No" button clicks
 
-.wrapper {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-}
+// Handle "No" button click
+noBtn.addEventListener("click", () => {
+  clickCount++; // Increment click count
 
-h2 {
-    font-size: 2em;
-    color: #e94d58;
-    margin: 15px 0;
-}
+  if (clickCount < 4) {
+    // Move the "No" button randomly
+    const wrapperRect = wrapper.getBoundingClientRect();
+    const noBtnRect = noBtn.getBoundingClientRect();
 
-.gif {
-    width: 100%;
-    max-width: 300px;
-}
+    const maxX = wrapperRect.width - noBtnRect.width;
+    const maxY = wrapperRect.height - noBtnRect.height;
 
-.btn-group {
-    margin-top: 50px;
-    position: relative;
-    height: 40px;
-}
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
 
-button {
-    width: 150px;
-    height: inherit;
-    color: white;
-    font-size: 1.2em;
-    border-radius: 30px;
-    outline: none;
-    cursor: pointer;
-    box-shadow: 0 2px 4px gray;
-    border: 2px solid #e94d58;
-}
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+  } else {
+    // After 4 clicks, move the button far away and show the Yes button
+    noBtn.style.left = Math.random() * window.innerWidth + "px";
+    noBtn.style.top = Math.random() * window.innerHeight + "px";
 
-button.yes-btn {
-    background: #e94d58;
-}
+    setTimeout(() => {
+      noBtn.style.display = "none"; // Hide "No" button
+      yesBtn.style.display = "block"; // Show "Yes" button
+      message.style.visibility = "visible"; // Show additional message
+    }, 1000);
+  }
+});
 
-button.no-btn {
-    background: white;
-    color: #e94d58;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
+// Handle "Yes" button click
+yesBtn.addEventListener("click", () => {
+  question.innerHTML = "I knew you love me!😝 يا اهبل  ";
+  message.style.visibility = "hidden"; // Hide the message after clicking Yes
+});

@@ -1,62 +1,27 @@
-// Select elements
-const noBtn = document.querySelector(".no-btn");
 const yesBtn = document.querySelector(".yes-btn");
-const wrapper = document.querySelector(".wrapper");
-const successMessage = document.querySelector(".success-message");
+const noBtn = document.querySelector(".no-btn");
+const question = document.querySelector(".question");
+const gif = document.querySelector(".gif");
 
-let clickCount = 0; // Counter to track "No" button clicks
-let gameOver = false; // To track if the game is over
-
-// Handle "No" button click
-noBtn.addEventListener("click", () => {
-  if (gameOver) return;
-
-  clickCount++; // Increment click count
-
-  // Shrink the "No" button with each click
-  const newSize = Math.max(30, 100 - clickCount * 15); // Minimum size is 30px
-  noBtn.style.width = `${newSize}px`;
-  noBtn.style.height = `${newSize}px`;
-
-  // Move the "No" button randomly
-  const maxX = window.innerWidth - newSize;
-  const maxY = window.innerHeight - newSize;
-
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
-
-  noBtn.style.left = `${randomX}px`;
-  noBtn.style.top = `${randomY}px`;
-
-  // After 5 clicks, show the "Yes" button
-  if (clickCount >= 5) {
-    setTimeout(() => {
-      noBtn.style.display = "none"; // Hide "No" button
-      yesBtn.style.display = "block"; // Show "Yes" button
-      moveYesButton(); // Move the "Yes" button randomly
-    }, 1000);
-  }
-});
-
-// Handle "Yes" button click
+// Change text and gif when the Yes button is clicked
 yesBtn.addEventListener("click", () => {
-  gameOver = true; // Mark the game as over
-  yesBtn.style.display = "none"; // Hide "Yes" button
-  successMessage.style.display = "block"; // Show success message
+  question.innerHTML = "You got Rickrolled 😘 (FOLLOW ME @kristel_tech or 7 years bad luck)";
+  gif.src = "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGI1cW5wMWhpaDF5b3pjdTF0OHZrcHJvaGkzOHJteDhmd245OGRnZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Vuw9m5wXviFIQ/giphy.gif";
 });
 
-// Move the "Yes" button randomly every 2 seconds
-function moveYesButton() {
-  if (gameOver) return;
+// Make the No button move randomly on hover
+noBtn.addEventListener("mouseover", () => {
+  const wrapper = document.querySelector(".wrapper");
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const noBtnRect = noBtn.getBoundingClientRect();
 
-  const maxX = window.innerWidth - yesBtn.offsetWidth;
-  const maxY = window.innerHeight - yesBtn.offsetHeight;
+  // Calculate max positions to ensure the button stays within the wrapper
+  const maxX = wrapperRect.width - noBtnRect.width;
+  const maxY = wrapperRect.height - noBtnRect.height;
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+  const randomX = Math.floor(Math.random() * maxX);
+  const randomY = Math.floor(Math.random() * maxY);
 
-  yesBtn.style.left = `${randomX}px`;
-  yesBtn.style.top = `${randomY}px`;
-
-  setTimeout(moveYesButton, 2000); // Move again after 2 seconds
-}
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+});
